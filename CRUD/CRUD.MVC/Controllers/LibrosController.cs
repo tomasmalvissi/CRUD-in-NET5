@@ -96,5 +96,30 @@ namespace CRUD.MVC.Controllers
 
             return View(libro);
         }
+
+        //HTTP POST DEL DEKETE PARA ELIMINAR EL LIBRO QUE ENCUENTRA
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteLibro(int? id)
+        {
+            var libro = _context.Libros.Find(id);
+
+            if (libro == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Libros.Remove(libro);
+                _context.SaveChanges();
+
+                TempData["Mensaje"] = "Libro eliminado con exito.";
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
     }
 }
